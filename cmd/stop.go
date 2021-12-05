@@ -28,7 +28,12 @@ var stopCmd = &cobra.Command{
 				cmd.PrintErr(err)
 				return
 			}
-			cmd.Printf("Stopped activity \"%s\".\n", activity.Title)
+			cmd.Printf(
+				"Stopped activity \"%s\".\nLast duration: %s.\nAll spent time: %s.\n",
+				activity.Title,
+				tracker.Timespan(activity.LastDuration()).Format(),
+				tracker.Timespan(activity.Duration()).Format(),
+			)
 		}
 	},
 }

@@ -2,8 +2,11 @@ package cmd
 
 import (
 	"strings"
+	"time"
 
 	"github.com/spf13/cobra"
+
+	"github.com/neonxp/track/internal/tracker"
 )
 
 // lsCmd represents the ls command
@@ -45,14 +48,26 @@ var lsCmd = &cobra.Command{
 				if !verbose && i < len(activity.Spans)-1 {
 					continue
 				}
-				stop := "now"
+				stop := time.Now()
+				stopText := "now"
 				if span.Stop != nil {
-					stop = span.Stop.Format("15:04:05 2.1.2006")
+					stop = *span.Stop
+					stopText = span.Stop.Format("15:04 2.1.2006")
 				}
 				if strings.Trim(span.Comment, " ") != "" {
-					cmd.Printf("\t%s — %s: \"%s\"\n", span.Start.Format("15:04:05 2.1.2006"), stop, span.Comment)
+					cmd.Printf(
+						"\t%s — %s (%s): \"%s\"\n",
+						span.Start.Format("15:04 2.1.2006"),
+						stopText,
+						tracker.Timespan(stop.Sub(span.Start)).Format(),
+						span.Comment)
 				} else {
-					cmd.Printf("\t%s — %s\n", span.Start.Format("15:04:05 2.1.2006"), stop)
+					cmd.Printf(
+						"\t%s — %s (%s)\n",
+						span.Start.Format("15:04 2.1.2006"),
+						stopText,
+						tracker.Timespan(stop.Sub(span.Start)).Format(),
+					)
 				}
 			}
 		}
