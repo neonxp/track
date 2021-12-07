@@ -38,7 +38,7 @@ brews:
       owner: neonxp
       name: homebrew-tap
       branch: master
-    url_template: "http://github.com/neonxp/track/releases/{{ .Tag }}/{{ .ArtifactName }}"
+    url_template: "http://github.com/neonxp/track/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
     commit_author:
       name: NeonXP
       email: i@neonxp.ru
