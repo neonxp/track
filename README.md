@@ -3,11 +3,20 @@ Time tracker for nerds
 
 ## Installation
 
+### Binaries
+
+Grab binaries for different OS from https://github.com/neonxp/track/releases
+
+### Homebrew
+
+```
+brew install neonxp/tap/track
+```
+
+### With golang
 ```
 go install github.com/neonxp/track@latest
 ```
-
-OS specified packages will be soon
 
 ## Usage
 
