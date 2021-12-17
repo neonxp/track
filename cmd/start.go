@@ -4,7 +4,10 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
+
+	"github.com/neonxp/track/internal/tracker"
 )
 
 // startCmd represents the start command
@@ -23,11 +26,20 @@ var startCmd = &cobra.Command{
 			return
 		}
 		comment := strings.Join(args[1:], " ")
+
+		fs := afero.NewOsFs()
+		tr, err := tracker.New(fs)
+		if err != nil {
+			cmd.PrintErr(err)
+			return
+		}
 		if err := tr.Start(id, comment); err != nil {
 			cmd.PrintErr(err)
 			return
 		}
+
 		activity := tr.Activity(id)
+
 		cmd.Printf("Started new span for activity \"%s\".\n", activity.Title)
 	},
 }

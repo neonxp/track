@@ -4,12 +4,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
 
 	"github.com/spf13/viper"
-
-	"github.com/neonxp/track/internal/tracker"
 )
 
 var cfgFile string
@@ -18,21 +15,12 @@ var cfgFile string
 var rootCmd = &cobra.Command{
 	Use:   "track",
 	Short: "Track your work or personal activities",
-	Long: `Track time spent for any work or personal activities`,
+	Long:  `Track time spent for any work or personal activities`,
 }
-
-var tr *tracker.Tracker
 
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
-	fs := afero.NewOsFs()
-	var err error
-	tr, err = tracker.New(fs)
-	if err != nil {
-		panic(err)
-		return
-	}
 	cobra.CheckErr(rootCmd.Execute())
 }
 
@@ -65,4 +53,3 @@ func initConfig() {
 		fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
 	}
 }
-

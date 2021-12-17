@@ -3,7 +3,10 @@ package cmd
 import (
 	"strings"
 
+	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
+
+	"github.com/neonxp/track/internal/tracker"
 )
 
 // addCmd represents the add command
@@ -34,6 +37,14 @@ var addCmd = &cobra.Command{
 			titles = append(titles, s)
 		}
 		title := strings.Join(titles, " ")
+
+		fs := afero.NewOsFs()
+		tr, err := tracker.New(fs)
+		if err != nil {
+			cmd.PrintErr(err)
+			return
+		}
+
 		activityID, err := tr.Add(title, tags, contexts)
 		if err != nil {
 			cmd.PrintErr(err)

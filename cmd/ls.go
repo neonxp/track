@@ -4,6 +4,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
 
 	"github.com/neonxp/track/internal/tracker"
@@ -25,7 +26,15 @@ var lsCmd = &cobra.Command{
 			cmd.PrintErr(err)
 			return
 		}
+
+		fs := afero.NewOsFs()
+		tr, err := tracker.New(fs)
+		if err != nil {
+			cmd.PrintErr(err)
+			return
+		}
 		activities := tr.List(all)
+
 		if len(activities) == 0 {
 			cmd.Printf("There is no activities.\n")
 			return
